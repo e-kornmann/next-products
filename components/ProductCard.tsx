@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const ProductCard = ({ product }: any) => {
+
+
+const ProductCard = ({ product, stock }: any) => {
   const { title, price, slug, thumbnail } = product.fields;
 
   return (
@@ -16,6 +18,7 @@ const ProductCard = ({ product }: any) => {
       <div className="content">
         <div className="info">
           <h4>{ title }</h4>
+          <h5>Stock: { stock }</h5>
         <div className="product-card__price">{ price }
     
            <Link href={`/products/${slug}`}><button>more info

@@ -37,14 +37,19 @@ export const getStaticProps = async ({ params }: any) => {
     'fields.slug': params.slug,
   })
 
+  const response = await fetch(`${process.env.API_BASEURL}/api/stock/${params.slug}`);
+  const stockData = await response.json();
+  const stock = stockData?.stock;
+
   return {
     props: {
       product: items[0],
+      stock: stock,
     },
   }
 }
 
-export default function ProductDetails({ product }: any) {
+export default function ProductDetails({ product, stock }: any) {
   const { featuredImage, title, specifications, description, price } = product.fields;
  
     return (
@@ -55,6 +60,7 @@ export default function ProductDetails({ product }: any) {
           height={featuredImage.fields.file.details.image.height} alt={''} 
           priority={true} /><div className="product-page__price">{ price }</div>
           <h2>{ title }</h2>
+          <h5>Stock: { stock }</h5>
           <div className="product-page__spec-containter">
           { specifications.map( (spec: any, index: Key | null | undefined)=> (
             

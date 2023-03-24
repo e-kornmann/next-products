@@ -1,36 +1,54 @@
 import ProductCard from '@/components/ProductCard'
+import clientPromise from "@/Database/MongoConnect";
 import { createClient, Entry } from 'contentful'
 import { Product } from '@/types';
 
+
+type Watch = {
+  casio: String,
+  stock: Number,
+}
+
 type ProductsProps = {
   products: Product[];
+  properties: Watch[]; // or replace any with the type of properties object
 };
+
 
 const spaceId :string = `${process.env.SPACE_ID}`;
 const constDelAt: string = `${process.env.CDA_AT}`;
 
-export const getStaticProps = async() => {
-  const client = createClient({
+export async function getStaticProps() {
+  const client = await clientPromise;
+  const db = client.db('saltdb');
+  const col = db.collection('casio_stock');
+  const data = await col.find({}).toArray();
+  const properties: Watch = JSON.parse(JSON.stringify(data));
+
+  const contentfulClient = createClient({
     space: spaceId,
     accessToken: constDelAt,
-  })
+  });
 
-  const res = await client.getEntries<Entry<Product>>({
+  const { items } = await contentfulClient.getEntries<Entry<Product>>({
     content_type: 'product'
-  })
+  });
 
-return {
+
+  return {
     props: {
-      products: res.items,
+      products: items,
+      properties: properties
     },
-  } 
+  }
 }
 
-const Products = ({ products }: ProductsProps) => {
+const Products = ({ products, properties }: ProductsProps) => {
   return (
+    
     <div className="product-list">
       {products.map( product => (
-        <ProductCard key={product.sys.id} product={product} />
+         <ProductCard key={product.sys.id} product={product} stock={properties.find(p => p.casio === product.fields.slug)?.stock} />
       ))}
       <style jsx>{
         `
@@ -50,7 +68,10 @@ const Products = ({ products }: ProductsProps) => {
       }</style>
 
     </div>
+
   )
 }
 
 export default Products;
+
+
