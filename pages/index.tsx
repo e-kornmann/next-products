@@ -11,7 +11,6 @@ type Watch = {
 
 type ProductsProps = {
   products: Product[];
-  properties: Watch[]; // or replace any with the type of properties object
 };
 
 
@@ -19,11 +18,6 @@ const spaceId :string = `${process.env.SPACE_ID}`;
 const constDelAt: string = `${process.env.CDA_AT}`;
 
 export async function getStaticProps() {
-  const client = await clientPromise;
-  const db = client.db('saltdb');
-  const col = db.collection('casio_stock');
-  const data = await col.find({}).toArray();
-  const properties: Watch = JSON.parse(JSON.stringify(data));
 
   const contentfulClient = createClient({
     space: spaceId,
@@ -38,17 +32,16 @@ export async function getStaticProps() {
   return {
     props: {
       products: items,
-      properties: properties
     },
   }
 }
 
-const Products = ({ products, properties }: ProductsProps) => {
+const Products = ({ products }: ProductsProps) => {
   return (
     
     <div className="product-list">
       {products.map( product => (
-         <ProductCard key={product.sys.id} product={product} stock={properties.find(p => p.casio === product.fields.slug)?.stock} />
+         <ProductCard key={product.sys.id} product={product} />
       ))}
       <style jsx>{
         `

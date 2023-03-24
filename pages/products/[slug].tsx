@@ -57,16 +57,17 @@ export default function ProductDetails({ product, stock }: any) {
          <Image 
           src={`http:${featuredImage.fields.file.url}`}
           width={featuredImage.fields.file.details.image.width}
-          height={featuredImage.fields.file.details.image.height} alt={''} 
-          priority={true} /><div className="product-page__price">{ price }</div>
+          height={featuredImage.fields.file.details.image.height} alt={''} /><div className="product-page__price">{ price }</div>
           <h2>{ title }</h2>
           <h5>Stock: { stock }</h5>
           <div className="product-page__spec-containter">
-          { specifications.map( (spec: any, index: Key | null | undefined)=> (
+          { specifications.map( (spec: any, index: Key | null | undefined) => { 
             
               <div key={index} className="product-page__spec-containter__spec">{ spec }</div>
             
-          ))}
+          
+        }
+        )}
        
           </div>
           <div className="description">

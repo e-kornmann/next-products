@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 
 
-const ProductCard = ({ product, stock }: any) => {
+const ProductCard = ({ product }: any) => {
   const { title, price, slug, thumbnail } = product.fields;
 
   return (
@@ -18,7 +18,6 @@ const ProductCard = ({ product, stock }: any) => {
       <div className="content">
         <div className="info">
           <h4>{ title }</h4>
-          <h5>Stock: { stock }</h5>
         <div className="product-card__price">{ price }
     
            <Link href={`/products/${slug}`}><button>more info

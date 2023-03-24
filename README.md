@@ -1,5 +1,5 @@
 GENESIS
-casio shop
+casio-shop
 
 Deployed version:
 https://next-products-phi.vercel.app/

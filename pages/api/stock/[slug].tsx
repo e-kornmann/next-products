@@ -2,7 +2,7 @@ import clientPromise from "@/Database/MongoConnect";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const stockData = async (req: NextApiRequest, res: NextApiResponse) => {
   const { slug } = req.query
   if (req.method !== 'GET') {
     res.status(405).send('Method not allowed');
@@ -21,3 +21,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 
 
+export default stockData;
